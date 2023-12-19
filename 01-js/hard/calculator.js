@@ -16,6 +16,67 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+  constructor() {
+    this.result = 0;
+  }
+
+  add(number) {
+    this.result += parseFloat(number);
+  }
+
+  subtract(number) {
+    this.result -= parseFloat(number);
+  }
+
+  multiply(number) {
+    this.result *= parseFloat(number);
+  }
+
+  divide(number) {
+    const divisor = parseFloat(number);
+    if (divisor === 0) {
+      throw new Error("Cannot divide by zero");
+    }
+    this.result /= divisor;
+  }
+
+  clear() {
+    this.result = 0;
+  }
+
+  getResult() {
+    return this.result;
+  }
+
+  calculate(expression) {
+    // Remove continuous spaces and validate expression
+    const cleanedExpression = expression.replace(/\s+/g, '');
+    if (!/^[\d+\-*/().]+$/.test(cleanedExpression)) {
+      throw new Error("Invalid expression");
+    }
+
+    // Use eval to calculate the result
+    this.result = eval(cleanedExpression);
+  }
+}
+
+module.exports = Calculator;
+
+// Test the Calculator class
+const calculator = new Calculator();
+
+calculator.add(10);
+calculator.subtract(5);
+calculator.multiply(2);
+calculator.divide(3);
+console.log("Result after arithmetic operations:", calculator.getResult()); // Output: 5.3333...
+
+calculator.clear();
+console.log("Result after clearing:", calculator.getResult()); // Output: 0
+
+calculator.calculate("10 + 2 * (6 - (4 + 1) / 2) + 7");
+console.log("Result after complex calculation:", calculator.getResult()); // Output: 24
+
 
 module.exports = Calculator;
