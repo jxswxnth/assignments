@@ -6,13 +6,17 @@ const { Admin, Course } = require("../db/index");
 // Admin Routes
 router.post('/signup', async (req, res) => {
     // Implement admin signup logic
-    const { username, password } = req.headers;
-    try {
-        const admin = new Admin({ username, password });
-        await admin.save();
-        res.json({ message: 'Admin created successfully' });
-    } catch (err) {
-        throw new Error(err);
+    if (req.headers?.username && req.headers?.password) {
+        const { username, password } = req.headers;
+        try {
+            const admin = new Admin({ username, password });
+            await admin.save();
+            res.json({ message: 'Admin created successfully' });
+        } catch (err) {
+            throw new Error(err);
+        }
+    } else {
+        res.status(403).json({ msg: "username and password required" });
     }
 });
 
