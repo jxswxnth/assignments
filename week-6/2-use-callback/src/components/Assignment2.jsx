@@ -7,16 +7,15 @@ import React, { useState, useCallback } from 'react';
 export function Assignment2() {
     const [inputText, setInputText] = useState('');
 
-    // Your code starts here
-    function showAlert() {
-
-    }
-    // Your code ends here
+    const showAlert = useCallback(() => {
+        alert(inputText);
+    }, [inputText]);
 
     return (
         <div>
             <input
                 type="text"
+                autoComplete="off"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Enter some text"
@@ -26,7 +25,7 @@ export function Assignment2() {
     );
 };
 
-function Alert({showAlert}) {
+function Alert({ showAlert }) {
     return <button onClick={showAlert}>Show Alert</button>
 }
 
