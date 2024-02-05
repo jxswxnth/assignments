@@ -1,9 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
 
-// In this assignment, you will create a component that renders a large list of sentences and includes an input field for filtering these items. 
-// The goal is to use useMemo to optimize the filtering process, ensuring the list is only re-calculated when necessary (e.g., when the filter criteria changes).
-// You will learn something new here, specifically how you have to pass more than one value in the dependency array
-
 const words = ["hi", "my", "name", "is", "for", "to", "random", "word"];
 const TOTAL_LINES = 1000;
 const ALL_WORDS = [];
@@ -26,13 +22,44 @@ export function Assignment2() {
         return sentences.filter(s => s.includes(filter));
     }, [filter, sentences]);
 
-    return <div>
-        <input type="text" onChange={(e) => {
-            setFilter(e.target.value)
-        }}></input>
-        <button onClick={() => { setCount(count + 1); console.log('other renders') }}>{count}</button>
-        {filteredSentences.map(word => <div key={word}>
-            {word}
-        </div>)}
-    </div>
+    const highlightSearch = (sentence) => {
+        if (filter === "") {
+            return sentence;
+        } else {
+            const parts = sentence.split(new RegExp(`(${filter})`, "gi"));
+            return (
+                <span>
+                    {parts.map((part, index) =>
+                        part.toLowerCase() === filter.toLowerCase() ? (
+                            <span key={index} style={{ backgroundColor: "yellow" }}>
+                                {part}
+                            </span>
+                        ) : (
+                            <span key={index}>{part}</span>
+                        )
+                    )}
+                </span>
+            );
+        }
+    };
+
+    return (
+        <div>
+            <input
+                type="text"
+                onChange={(e) => setFilter(e.target.value)}
+            ></input>
+            <button
+                onClick={() => {
+                    setCount(count + 1);
+                    console.log('other renders');
+                }}
+            >
+                {count}
+            </button>
+            {filteredSentences.map((sentence, index) => (
+                <div key={index}>{highlightSearch(sentence)}</div>
+            ))}
+        </div>
+    );
 }
